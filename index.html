@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مفاجأة جنات ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+:root{--gold:#f0d49a;--pink:#ef9eaf;--cream:#fff5e9}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--cream);font-family:"Cairo",sans-serif;min-height:100vh;
+  background:radial-gradient(ellipse at 50% 0,#54253b 0,transparent 55%),
+  linear-gradient(145deg,#110c14,#26131f 55%,#100b12);overflow-x:hidden
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.45;z-index:-1;
+  background-image:radial-gradient(1px 1px at 15% 22%,#fff 99%,transparent),
+  radial-gradient(2px 2px at 77% 34%,#e9c982 99%,transparent),
+  radial-gradient(1px 1px at 48% 76%,#fff 99%,transparent);
+  background-size:250px 250px}
+button{font:700 15px "Cairo";cursor:pointer}
+.screen{min-height:100vh;display:grid;place-items:center;padding:22px}
+.card{width:min(100%,760px);padding:clamp(24px,6vw,52px);text-align:center;
+  border:1px solid #e9c98255;border-radius:26px;background:#ffffff0b;
+  box-shadow:0 24px 90px #0008;backdrop-filter:blur(10px)}
+.gold{color:var(--gold)}.muted{color:#f5e7dfb8;line-height:2}
+.eyebrow{font-size:12px;letter-spacing:3px;color:var(--gold)}
+h1{font-size:clamp(30px,8vw,52px);margin:10px 0}
+input{width:100%;padding:14px;border-radius:13px;border:1px solid #e9c98266;
+  background:#130c14;color:white;font:inherit;text-align:center;outline:0}
+.btn{padding:12px 22px;border-radius:13px;color:#29151c;border:0;
+  background:linear-gradient(135deg,#f5dfa9,#d0a05c);transition:.2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.btn.secondary{color:var(--cream);border:1px solid #e9c98266;background:#ffffff0b}
+#err{color:#ff9eae;min-height:25px}
+#site{display:none}
+header{padding:35px 15px 22px;text-align:center}
+header .heart{font-size:42px;color:var(--pink);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.18)}}
+header h1{color:var(--gold);margin:0;font-size:clamp(38px,10vw,68px)}
+header p{margin:4px;color:#f8e9df}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px auto 28px}
+nav a{color:var(--cream);text-decoration:none;border:1px solid #e9c98255;
+  border-radius:99px;padding:7px 14px;font-size:13px}
+main{width:min(100% - 28px,760px);margin:auto}
+section{scroll-margin-top:15px;margin:18px 0;padding:24px;
+  background:#ffffff09;border:1px solid #e9c98233;border-radius:22px}
+section h2{color:var(--gold);margin:0 0 8px}
+.small{font-size:13px;color:#e8d7d0b8}
+.row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.option,.choice{padding:12px;border-radius:13px;color:var(--cream);
+  border:1px solid #e9c98255;background:#ffffff09}
+.option:hover,.choice:hover{background:#e9c98220}
+#quizResult{min-height:28px;color:var(--pink);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.flip{min-height:100px;border-radius:15px;border:1px solid #e9c98266;
+  background:linear-gradient(140deg,#5a2c40,#21131d);color:var(--gold);
+  font-size:25px;padding:10px}
+.flip span{display:block;color:var(--cream);font-size:13px;margin-top:6px}
+.bar{height:14px;border-radius:99px;background:#ffffff1b;margin:15px 0;overflow:hidden}
+.fill{height:100%;width:8%;border-radius:inherit;
+  background:linear-gradient(90deg,#c77a8a,#f0d49a);transition:width .5s}
+#loveText{color:var(--gold);font-size:20px;font-weight:800}
+#giftResult,#finalText{font-size:19px;color:var(--pink);min-height:30px;margin-top:15px}
+.timeline{display:flex;gap:12px;text-align:right}
+.match-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:440px;margin:18px auto}
+.match-card{height:72px;border-radius:13px;border:1px solid #e9c98266;
+  background:#ffffff0b;color:var(--gold);font-size:25px}
+.match-card.done{background:#7d405466;color:#fff}
+#wheel{font-size:72px;display:inline-block;transition:transform 2s cubic-bezier(.15,.75,.2,1)}
+.wheel-box{margin:12px auto}
+#wheelResult,#scratchResult{min-height:32px;color:var(--pink);font-weight:700}
+.scratch{margin:15px auto;padding:30px 12px;max-width:440px;border:1px dashed var(--gold);
+  border-radius:15px;background:linear-gradient(135deg,#4d2839,#24141e);cursor:pointer}
+.scratch span{display:block;color:var(--gold);font-weight:800}
+footer{text-align:center;padding:35px 15px;color:#e9c982}
+.floating{position:fixed;bottom:-30px;pointer-events:none;animation:rise 5s linear forwards;z-index:10}
+@keyframes rise{to{transform:translateY(-110vh) rotate(30deg);opacity:0}}
+@media(max-width:480px){
+  .quiz-options{grid-template-columns:1fr}.cards{gap:7px}.flip{min-height:90px;padding:7px}
+  .match-card{height:62px}
+}
+</style>
+</head>
+
+<body>
+<div class="screen" id="gate">
+  <div class="card">
+    <div class="eyebrow">11 · 11 — مفاجأة مخصوص</div>
+    <div style="font-size:42px;margin-top:12px">♡</div>
+    <h1>مستعدة للمفاجأة؟</h1>
+    <p class="muted">اكتبي تاريخ ميلادك وافتحي عالمك الصغير يا جنات</p>
+    <div style="max-width:400px;margin:20px auto">
+      <input id="password" type="password" inputmode="numeric" placeholder="يوم / شهر / سنة">
+      <div class="row"><button class="btn" onclick="unlock()">افتحي المفاجأة ♡</button></div>
+      <div id="err"></div>
+    </div>
+  </div>
+</div>
+
+<div id="site">
+  <header>
+    <div class="heart">♥</div>
+    <div class="eyebrow">11 · 11 · 2026</div>
+    <h1>أم فهد</h1>
+    <p>جنات جوجايتي… دي لعبتنا إحنا ♡</p>
+  </header>
+
+  <nav>
+    <a href="#message">رسالة</a><a href="#quiz">اختبار</a>
+    <a href="#cards">كروت</a><a href="#memory">لعبة</a>
+    <a href="#wheelSection">عجلة</a><a href="#meter">مقياس الحب</a>
+    <a href="#gift">هدية</a>
+  </nav>
+
+  <main>
+    <section id="message">
+      <h2>حكايتنا بدأت ♡</h2>
+      <div class="timeline"><div class="gold">✦</div>
+        <div><b class="gold">2 سبتمبر 2026</b><br>
+        <span class="muted">اليوم اللي اتكلمنا فيه لأول مرة… ومنه بدأت حكاية بقت غالية على قلبي.</span></div>
+      </div>
+      <p class="muted">
+        يا أم فهد، وجودك في حياتي بيخلّي الأيام أحلى. بحب ضحكتك وكلامك
+        وكل تفصيلة صغيرة فيكي. نفسي أكون دايمًا سندك وأمانك،
+        ونفضل نعمل ذكريات حلوة سوا. بحبك النهارده وكل يوم جاي ♡
+      </p>
+    </section>
+
+    <section id="quiz">
+      <h2>اختبار الحب السريع 💌</h2>
+      <p class="muted" id="question"></p>
+      <div class="quiz-options" id="options"></div>
+      <div id="quizResult"></div>
+      <div class="small">جاوبي على الأسئلة واحدة واحدة 😌</div>
+    </section>
+
+    <section id="cards">
+      <h2>اختاري كارت وافتحي سرّه ✨</h2>
+      <p class="small">كل كارت جواه كلمة ليكي</p>
+      <div class="cards">
+        <button class="flip" onclick="reveal(this,'ضحكتك بتخلّي يومي أحلى ♥')">♡<span>افتحيني</span></button>
+        <button class="flip" onclick="reveal(this,'إنتِ أجمل صدفة حصلتلي ✨')">✧<span>افتحيني</span></button>
+        <button class="flip" onclick="reveal(this,'مكانك محفوظ جوه قلبي للأبد 💌')">❀<span>افتحيني</span></button>
+      </div>
+    </section>
+
+    <section id="memory">
+      <h2>لعبة الذاكرة 🧠</h2>
+      <p class="muted">دوري على كل قلبين شبه بعض!</p>
+      <div class="match-grid" id="matchGrid"></div>
+      <div id="matchStatus" class="small">الأزواج: 0 من 6</div>
+      <div class="row"><button class="btn secondary" onclick="startMemory()">ابدئي من جديد</button></div>
+    </section>
+
+    <section id="wheelSection">
+      <h2>عجلة المفاجآت 🎡</h2>
+      <p class="muted">لفّي العجلة وشوفي المفاجأة اللي طالعة لك</p>
+      <div class="wheel-box"><div id="wheel">🎡</div></div>
+      <button class="btn" onclick="spinWheel()">لفّي العجلة</button>
+      <div id="wheelResult"></div>
+    </section>
+
+    <section>
+      <h2>اكشفي الرسالة السرية 💝</h2>
+      <p class="muted">دوسي على الظرف عشان تفتحيه</p>
+      <div class="scratch" onclick="openSecret(this)">
+        <span>✉️ دوسي هنا</span>
+        <div class="small">في رسالة مستنياكي جوه…</div>
+      </div>
+      <div id="scratchResult"></div>
+    </section>
+
+    <section id="meter">
+      <h2>مقياس حبي ليكي 📈</h2>
+      <div id="loveText">8% — لسه بنبدأ!</div>
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <button class="btn" onclick="addLove()">دوسي عشان الحب يزيد ♡</button>
+      <p class="small">المقياس ممكن يبوظ من كتر الحب 😅</p>
+    </section>
+
+    <section id="gift">
+      <h2>اختاري هديتك 🎁</h2>
+      <p class="muted">لو هختارلك حاجة من قلبي، تحبي إيه؟</p>
+      <div class="row">
+        <button class="choice" onclick="pick('حضن طويل ومش هسيبك بسرعة 🫂')">حضن 🫂</button>
+        <button class="choice" onclick="pick('خروجة حلوة لينا إحنا الاتنين 🌙')">خروجة 🌙</button>
+        <button class="choice" onclick="pick('مفاجأة حلوة من اختيارك إنتِ 🎀')">مفاجأة 🎀</button>
+      </div>
+      <div id="giftResult"></div>
+    </section>
+
+    <section style="text-align:center">
+      <h2>أمنية من قلبي 🌟</h2>
+      <p class="muted">اضغطي الزرار عشان تعرفي أمنيتي ليكي</p>
+      <button class="btn" onclick="finalSurprise()">افتحيها 💝</button>
+      <p id="finalText"></p>
+    </section>
+  </main>
+  <footer>اتعملت مخصوص لجنات — من قلب بيحبك أوي ♡</footer>
+</div>
+
+<script>
+function unlock(){
+  const v=document.getElementById("password").value.replace(/\s/g,"");
+  if(["31/5/2009","31/05/2009","31-5-2009","31-05-2009"].includes(v)){
+    document.getElementById("gate").style.display="none";
+    document.getElementById("site").style.display="block";
+    showQuestion();startMemory();hearts();
+  }else document.getElementById("err").textContent="جربي تاني يا أم فهد ♡";
+}
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
+
+const questions=[
+  {q:"مين أكتر واحدة واخدة قلبي؟",a:["جنات طبعًا","أنا 😎","القطط"],good:0},
+  {q:"إيه أحلى حاجة في يومي؟",a:["لما أكلمك","الأكل","النوم"],good:0},
+  {q:"مين أحلى أم فهد في الدنيا؟",a:["جنات","جنات برضه","مفيش غير جنات"],good:2},
+  {q:"لو قلبي له عنوان، هيكون فين؟",a:["عندك يا جنات","في المطبخ","مش عارف"],good:0}
+];
+let qi=0;
+function showQuestion(){
+  const x=questions[qi];document.getElementById("question").textContent=x.q;
+  document.getElementById("quizResult").textContent="";
+  document.getElementById("options").innerHTML=x.a.map((a,i)=>
+    `<button class="option" onclick="answer(${i})">${a}</button>`).join("");
+}
+function answer(i){
+  const x=questions[qi];
+  document.getElementById("quizResult").textContent=
+    i===x.good?"إجابة صح! عارفة مكانك في قلبي 😍":"إجابة مقبولة… بس أنا عارف الإجابة الصح 😌";
+  qi=(qi+1)%questions.length;setTimeout(showQuestion,1500);
+}
+function reveal(btn,msg){btn.innerHTML="♡<span>"+msg+"</span>";btn.style.background="linear-gradient(140deg,#73384e,#3a1c2b)"}
+
+let love=8;
+function addLove(){
+  love+=17;
+  if(love>=100){love=100;document.getElementById("loveText").textContent="∞ — الحب خرج برّه المقياس!"}
+  else document.getElementById("loveText").textContent=love+"% — ولسه بيزيد!";
+  document.getElementById("fill").style.width=love+"%";hearts();
+}
+function pick(msg){document.getElementById("giftResult").textContent="اختيارك: "+msg+" وعد مني ♡"}
+function finalSurprise(){
+  document.getElementById("finalText").textContent="أمنيتي؟ أفضل سبب صغير يخلّيكي تبتسمي كل يوم ♡";
+  for(let i=0;i<18;i++)setTimeout(hearts,i*90);
+}
+function openSecret(box){
+  box.innerHTML="<span>💌 الرسالة السرية</span><br>إنتِ مش مجرد حبيبتي… إنتِ الحكاية الحلوة اللي نفسي تكمل معايا العمر كله ♡";
+  document.getElementById("scratchResult").textContent="بحبك يا أم فهد!";
+}
+
+let wheelTurns=0;
+const prizes=["حضن دافي 🫂","كلمتين حلوين 💌","خروجة لينا 🌙","مفاجأة صغيرة 🎁","ضحكة من القلب 😍","طلبك مجاب 😉"];
+function spinWheel(){
+  wheelTurns++;
+  const wheel=document.getElementById("wheel");
+  const prize=prizes[Math.floor(Math.random()*prizes.length)];
+  wheel.style.transform=`rotate(${wheelTurns*720+Math.random()*360}deg)`;
+  document.getElementById("wheelResult").textContent="مفاجأتك: "+prize;
+  setTimeout(hearts,500);
+}
+
+let first=null,locked=false,matches=0;
+function startMemory(){
+  const symbols=["♡","♡","♥","♥","✿","✿","✨","✨","💌","💌","🌙","🌙"];
+  symbols.sort(()=>Math.random()-.5);first=null;locked=false;matches=0;
+  document.getElementById("matchStatus").textContent="الأزواج: 0 من 6";
+  document.getElementById("matchGrid").innerHTML=symbols.map((s,i)=>
+    `<button class="match-card" data-symbol="${s}" onclick="flipMatch(this)">?</button>`).join("");
+}
+function flipMatch(card){
+  if(locked||card.classList.contains("done")||card===first)return;
+  card.textContent=card.dataset.symbol;
+  if(!first){first=card;return}
+  if(first.dataset.symbol===card.dataset.symbol){
+    first.classList.add("done");card.classList.add("done");first=null;matches++;
+    document.getElementById("matchStatus").textContent="الأزواج: "+matches+" من 6";
+    if(matches===6){document.getElementById("matchStatus").textContent="برافو يا جنات! كسبتي اللعبة وكل القلوب ♡";hearts()}
+  }else{
+    locked=true;const prev=first;first=null;
+    setTimeout(()=>{prev.textContent="?";card.textContent="?";locked=false},750);
+  }
+}
+function hearts(){
+  const h=document.createElement("span");h.className="floating";
+  h.textContent=Math.random()>.5?"♥":"♡";h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(16+Math.random()*20)+"px";
+  h.style.color=Math.random()>.5?"#ef9eaf":"#f0d49a";
+  h.style.animationDuration=(4+Math.random()*3)+"s";
+  document.body.appendChild(h);setTimeout(()=>h.remove(),7500);
+}
+</script>
+</body>
+</html>
